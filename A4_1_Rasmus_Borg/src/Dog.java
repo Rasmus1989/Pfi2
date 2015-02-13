@@ -1,32 +1,41 @@
 /*																																											//Klassen
 Rasmus Nilsson Borg
 11/02-15
-
-Jag har inte kommit så lånt, men gjort klassen Human / klassen dog.
-Kan inte komma åt window builder, efertsom jag lyckats fixa eclispe 1,6.
-Ska fixa det tills i eftermiddag
+IDK14
 */
-//Klassen 
+
+
+//Klassen DOG
 public class Dog {
 
 	public String name;
 	
-    private String dog;
+    public String dog;
 	
-	//Konstruktor
+	//Constructor
 	public Dog(String name) {
 		this.name = name;
+		
+		System.out.println("Dog created " + name);
+		if(name.length()>3){
+			this.dog = name;
+		}else{
+			System.out.println("Name too short... ");
+		}
 	}
+	
+    //Function
+    public void setName(String namn){
+    	namn = name;
+    }
 	 
+    //Function
 	public String getName(){
 		return name;
 	}
 
-    public void setName(String namn){
-    	namn = name;
-    }
 
-
+   //Function
    public String getInfo(){
 	   return name;
    }
