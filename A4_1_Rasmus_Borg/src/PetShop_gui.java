@@ -153,7 +153,7 @@ public Dog dog;
 				Info.append(human.dog.name);
 				}
 				if(dog==null){
-					Info.setText("cant find this dog");
+					Info.setText("can't find this dog");
 					
 				}
 				
