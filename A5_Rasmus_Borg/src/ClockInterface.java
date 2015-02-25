@@ -1,7 +1,6 @@
-
 public interface ClockInterface {
-
-	public int update (int hours, int minutes, int seconds);
-	
-		
+    public void update(int hours, int minutes, int seconds);
+    
 }
+		
+
