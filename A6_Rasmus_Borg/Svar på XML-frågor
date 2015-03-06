@@ -1,0 +1,21 @@
+a) Malmö C och Lund C
+
+b) De resultat man vill ha anges med "&noOf=antal" så xml strängen för fem resultat, det kan se ut på följande sätt:
+http://www.labs.skanetrafiken.se/v2.2/resultspage.asp?cmdaction=next&selPointFr=0|80000|0&selPointTo=0|81216|0|&noOf=5
+
+c) <Journeys> håller reda på alla resultat från en sökning. Resultaten beskrivs med <Journey> taggen. 
+Inom <Journey> finns varierad information om resan, tex om olika priser. I <Journey> kan man gå djupare
+genom att öppna fler taggar, bland annat <RouteLinks> som håller information om förseningar, och
+information om linjen, zoner etc.
+Varje tagg avslutas/stängs med </>, se nedan. 
+
+<Journeys>
+<Journey>
+<RouteLinks>
+<RouteLink>
+</RouteLink>
+</RouteLinks>
+</Journey>
+</Journeys>
+
+d) XML-taggen heter <NoOfChanges> och finns i <Journey> taggen
