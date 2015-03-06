@@ -1,97 +1,70 @@
+
+
+
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import java.util.List;
- 
-import javax.swing.SwingWorker;
- 
-public class ClockLogic extends SwingWorker <Void, Void> implements ClockInterface{
-     
-    public DigitalClockGui clock;
-    public int time_hours;
-    public int time_minutes;
-    public int time_seconds;
-    public static int alarm_hours=10;
-    public static int alarm_minutes;
-    public static int alarm_seconds;
 
-    private boolean alarm;
-    
-     
-    public ClockLogic(DigitalClockGui gui){
-         
-        clock = gui;
-        Thread myThread= new Clock_Thread(ClockLogic.this);
-        myThread.start();
-        	
-        
-    }
-     
-    @Override
-    protected Void doInBackground() throws Exception {
-         
-        while(isCancelled() == false)
-        {
-            /**
-             * This If check if the numbers form the textAreas match the current time so activates the Alarm
-             */
-            if(time_hours == alarm_hours && time_minutes == alarm_minutes && time_seconds == alarm_seconds && alarm == true){
-                 
-                clock.invokeAlarm();
-                System.out.println("WAKE UP!");
-                 
-            }
-        this.publish();
-     
-        }
- 
-        return null;
-    }
-     
-     
-    protected void process(List<Void> chunks) {
-         
-        /**
-         * Gets the time from the computer that the program is running
-         */
-         
-        Calendar myTime = Calendar.getInstance();
-        time_hours = myTime.get(Calendar.HOUR_OF_DAY);
-        time_minutes = myTime.get(Calendar.MINUTE);
-        time_seconds = myTime.get(Calendar.SECOND);
-          
-        clock.setTime(time_hours, time_minutes, time_seconds);
-         
- 
-    }
-     
-     
-    public void setAlarm(int hours, int minutes, int seconds){
-        alarm_hours = hours;
-        alarm_minutes = minutes;
-        alarm_seconds = seconds;
-    }
-     
-    public void setBoolean(boolean Alarm){
-        alarm = Alarm;
-    }
-     
-    
-    public void reset(){
-    	alarm_hours = 0;
-        alarm_minutes = 0;
-        alarm_seconds = 0;
-    	
-    }
+public class ClockLogic implements ClockInterface {
 
-	@Override
-	public void update(int hours, int minutes, int seconds) {
-	clock.TimeDisplay.setText(String.valueOf(hours)+ String.valueOf(minutes)+ String.valueOf(seconds) );
+	private DigitalClockGui clockGUI;
+	private int alarmHour;
+	private int alarmMinute;
+	private String tid="";
+	private String alarmTid="";
+	private int hours;
+	private int minutes;
 	
-		System.out.println(String.valueOf(hours)+ String.valueOf(minutes)+ String.valueOf(seconds) );
+	
+	
+	public ClockLogic (DigitalClockGui clockIn){
+		this.clockGUI = clockIn;
 		
+		Thread t = new Clock_Thread(this); //This creates a thread
+		//t.setName("UpdateThread");
+		t.start(); //this starts a thread when ok with preparations etc
+	}
+
+	public void setAlarm(int hours, int minute){
+alarmHour=hours;
+alarmMinute=minute;
+
+alarmTid=String.format("%02d",alarmHour) +" : " + String.format("%02d", alarmMinute);
+//alarmTid=String.valueOf(alarmHour) +" : " + String.valueOf(alarmMinute);
+
+clockGUI.setAlarm(alarmTid);
+		
+	}
+	
+	public void clearAlarm(){
+		clockGUI.clear();
+		
+	}
+	//@Override
+
+	public void update(int hours, int minute, int second) {
+		Calendar cal = new GregorianCalendar();
+		hours=cal.get(Calendar.HOUR_OF_DAY);
+		minute=cal.get(Calendar.MINUTE);
+		second = cal.get(Calendar.SECOND);
+		//tid = String.valueOf(hours) +":" + String.valueOf(minute) +":"+String.valueOf(second); // <- Detta fungerar också men ger ex. 2:22 ist för 02:22.
+		tid = (String.format("%02d",hours)+" : "+String.format("%02d",minute)+" : "+String.format("%02d",second)); // retunerar "02" ist för "2".
+		this.hours=hours;
+		this.minutes=minute;
+		
+		
+		System.out.println(tid);	
+		clockGUI.setTimeOnLabel(tid);
+		if((this.hours==alarmHour) && (this.minutes==alarmMinute) && (clockGUI.alarmIsSet==true)){
+			clockGUI.alarm(true);
+			
+		}
+		if(clockGUI.alarmIsOn==true){
+			clockGUI.soundAlarm();
+		}
+		// TODO Auto-generated method stub
+
 	}
 
 	
-    
- 
-}
+	}

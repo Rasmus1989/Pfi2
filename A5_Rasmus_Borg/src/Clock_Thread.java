@@ -1,38 +1,30 @@
-import java.awt.*;
 
-import java.util.*;
+
+import java.util.Calendar;
+//import java.util.GregorianCalendar;
 
 public class Clock_Thread extends Thread {
-	public ClockInterface myInterface;
-  String currentTime;
-  Label labelToChange;
-  boolean keepGoing = true;
+// Calendar cal = new GregorianCalendar();
 
-  public Clock_Thread(ClockLogic myLogic){
-	  super();
-	  myInterface = myLogic;
-	 System.out.println("The Time is1: ");
-	 
-    //labelToChange = lbl;
-  } // end constructor
+public boolean running = true;
 
-  public void stopLooping(){
-    keepGoing = false;
-  } // end stopLooping
+private ClockInterface clockInterface; 
 
-  public void run(){
-    while (keepGoing){
-    	try {
-			Thread.sleep(900);
-			myInterface.update(12, 12, 12);
-			System.out.println(	  );
-		} catch (Exception e) {
-			 
-			e.printStackTrace();
-		}
-      //currentTime = String.valueOf(new Date());
-      //labelToChange.setText(currentTime);
-    } // end while loop
-  } // end run
+   public Clock_Thread(ClockInterface ci){
+	 this.clockInterface=ci;
+   }
 
-} // end class def
+   public void run() {
+	  // long timer = System.currentTimeMillis();
+	   while (running) {   
+		Calendar now = Calendar.getInstance();
+		clockInterface.update(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),now.get(Calendar.SECOND));
+		
+		   try{
+			   Thread.sleep(1000);
+			   
+		   }catch (InterruptedException ex){
+	   }
+   }  
+}
+}
